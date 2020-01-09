@@ -27,14 +27,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "risp_code"
-version = "0.1.0"
-dependencies = [
- "proc-macro-hack 0.5.11 (registry+https://github.com/rust-lang/crates.io-index)",
- "risp_macro 0.1.0",
-]
-
-[[package]]
 name = "risp_macro"
 version = "0.1.0"
 dependencies = [
