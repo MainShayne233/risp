@@ -1,5 +1,5 @@
 [package]
-name = "risp_code"
+name = "risp_ast"
 version = "0.1.0"
 authors = ["MainShayne233 <shaynetremblay@gmail.com>"]
 edition = "2018"
@@ -7,5 +7,3 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-proc-macro-hack = "0.5"
-risp_macro = { path = "../risp_macro" }
