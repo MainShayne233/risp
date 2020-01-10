@@ -4,7 +4,7 @@ set -CEeo pipefail
 IFS=$'\n\t'
 shopt -s extdebug
 
-DIR="$(dirname "$(readlink -f "$0")")"
+DIR="$(dirname "$(readlink -f "$0")")/.."
 
 USAGE=$(cat <<-END
     Usage:
@@ -28,36 +28,43 @@ TEMPLATE=$(cat <<-END
 END
 )
 
-SOUND="${DIR}/../media/compile.wav"
+TMPDIR="${DIR}/tmp"
+
+SOUND="${DIR}/media/compile.wav"
 
 eval_expression() {
   local expression="$1"
   local src
 
-    (aplay -q -d 8 "$SOUND")&
-    echo "Reading code..."
-    echo ""
-    sleep 2
-    echo "Crunching numbers..."
-    echo ""
-    sleep 2
-    echo "Beep boop beep boop..."
-    echo ""
-    sleep 2
-    echo "This is taking forever :'("
-    echo ""
-    sleep 2
-    echo "Oh wow it's done!"
-    echo ""
+  (aplay -q -d 8 "$SOUND")&
+  echo "Reading code..."
+  echo ""
+  sleep 2
+  echo "Crunching numbers..."
+  echo ""
+  sleep 2
+  echo "Beep boop beep boop..."
+  echo ""
+  sleep 2
+  echo "This is taking forever :'("
+  echo ""
+  sleep 2
+  echo "Oh wow it's done!"
+  echo ""
 
   (
-    cd /tmp
+    if [ ! -d "$TMPDIR" ]; then
+      mkdir "$TMPDIR"
+    fi
+
+    cd "$TMPDIR"
+
     if [ -d tmp-risp ]; then
       cd tmp-risp
     else
       cargo new tmp-risp
       cd tmp-risp
-      gawk -i inplace '{ gsub(/\[dependencies\]/, "[dependencies]\nrisp = { git = \"https://github.com/MainShayne233/risp\" }"); print $0 }' /tmp/tmp-risp/Cargo.toml
+      gawk -i inplace '{ gsub(/\[dependencies\]/, "[dependencies]\nrisp = { git = \"https://github.com/MainShayne233/risp\" }"); print $0 }' Cargo.toml
     fi
 
     rm src/main.rs
