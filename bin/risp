@@ -1,0 +1,64 @@
+#! /usr/bin/env bash
+
+set -CEeuo pipefail
+IFS=$'\n\t'
+shopt -s extdebug
+
+USAGE=$(cat <<-END
+    Usage:
+
+    ./risp <expression>
+
+    ./risp -f <path-to-file>
+END
+)
+
+TEMPLATE=$(cat <<-END
+    use risp::risp;
+
+    fn main() {
+      let result = risp! {
+        expression
+      };
+
+      println!("{}", result);
+    }
+END
+)
+
+eval_expression() {
+  local expression="$1"
+  local src
+
+  (
+    cd /tmp
+    if [ -d tmp-risp ]; then
+      cd tmp-risp
+    else
+      cargo new tmp-risp
+      cd tmp-risp
+      gawk -i inplace '{ gsub(/\[dependencies\]/, "[dependencies]\nrisp = { git = \"https://github.com/MainShayne233/risp\" }"); print $0 }' /tmp/tmp-risp/Cargo.toml
+    fi
+
+    rm src/main.rs
+    echo "$TEMPLATE" | sed "s/expression/$expression/" > src/main.rs
+    cargo run
+  )
+}
+
+main() {
+  local expression
+  if [ "$#" -eq 2 ] && [ "$1" = "-f" ] && [ -f "$2" ]; then
+    expression=$(cat "$2")
+  elif [ "$#" -eq 1 ]; then
+    expression=$(echo "$1")
+  else
+    echo "$USAGE" 1>&2
+    exit 1
+  fi
+
+  eval_expression "$expression"
+}
+
+
+main "$@"

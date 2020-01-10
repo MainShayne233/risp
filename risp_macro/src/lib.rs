@@ -12,7 +12,6 @@ use risp_ast::{Expression, Operation};
 pub fn risp(input: TokenStream) -> TokenStream {
     let tree = input.into_iter().next().unwrap();
     let expression = parse_expression(&tree);
-    println!("{:#?}", expression);
     let evaluated = evaluate_expression(expression);
 
     TokenStream::from(quote! {
