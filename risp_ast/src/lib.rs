@@ -1,18 +1,19 @@
-#[derive(Debug, PartialEq)]
+#[derive(Debug)]
+pub enum Expression {
+    Apply {
+        operation: Operation,
+        first_arg: Box<Expression>,
+        second_arg: Box<Expression>,
+    },
+    Integer {
+        value: i64,
+    },
+}
+
+#[derive(Debug)]
 pub enum Operation {
     Add,
     Subtract,
     Multiply,
     Divide,
-}
-
-#[derive(Debug, PartialEq)]
-pub enum Expression {
-    Apply {
-        operation: Operation,
-        args: Box<(Expression, Expression)>,
-    },
-    Integer {
-        value: i64,
-    },
 }

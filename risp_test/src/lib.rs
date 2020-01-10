@@ -1,8 +1,7 @@
-use risp::risp;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use risp::risp;
 
     #[test]
     fn test_single_level_expr() {
@@ -36,8 +35,8 @@ mod tests {
         let actual = risp! {
             // (7 - 3) * ((4 + 6) / (1 * 2))
             (*
-             (- 7 3)
-             (/ (+ 4 6) (* 1 2))
+              (- 7 3)
+              (/ (+ 4 6) (* 1 2))
             )
         };
 
