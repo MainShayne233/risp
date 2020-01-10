@@ -1,8 +1,10 @@
 #! /usr/bin/env bash
 
-set -CEeuo pipefail
+set -CEeo pipefail
 IFS=$'\n\t'
 shopt -s extdebug
+
+DIR="$(dirname "$(readlink -f "$0")")"
 
 USAGE=$(cat <<-END
     Usage:
@@ -26,9 +28,27 @@ TEMPLATE=$(cat <<-END
 END
 )
 
+SOUND="${DIR}/../media/compile.wav"
+
 eval_expression() {
   local expression="$1"
   local src
+
+    (aplay -q -d 8 "$SOUND")&
+    echo "Reading code..."
+    echo ""
+    sleep 2
+    echo "Crunching numbers..."
+    echo ""
+    sleep 2
+    echo "Beep boop beep boop..."
+    echo ""
+    sleep 2
+    echo "This is taking forever :'("
+    echo ""
+    sleep 2
+    echo "Oh wow it's done!"
+    echo ""
 
   (
     cd /tmp
@@ -42,7 +62,7 @@ eval_expression() {
 
     rm src/main.rs
     echo "$TEMPLATE" | sed "s/expression/$expression/" > src/main.rs
-    cargo run
+    cargo run -q
   )
 }
 

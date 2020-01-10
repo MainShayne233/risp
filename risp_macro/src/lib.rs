@@ -12,10 +12,10 @@ use risp_ast::{Expression, Operation};
 pub fn risp(input: TokenStream) -> TokenStream {
     let tree = input.into_iter().next().unwrap();
     let expression = parse_expression(&tree);
-    let evaluated = evaluate_expression(expression);
+    let interpreted = interpret_expression(expression);
 
     TokenStream::from(quote! {
-        #evaluated
+        #interpreted
     })
 }
 
@@ -61,9 +61,9 @@ fn parse_literal(literal: &Literal) -> Expression {
     }
 }
 
-fn evaluate_apply(operation: Operation, first_arg: Expression, second_arg: Expression) -> i64 {
-    let evaled_first_arg = evaluate_expression(first_arg);
-    let evaled_second_arg = evaluate_expression(second_arg);
+fn interpret_apply(operation: Operation, first_arg: Expression, second_arg: Expression) -> i64 {
+    let evaled_first_arg = interpret_expression(first_arg);
+    let evaled_second_arg = interpret_expression(second_arg);
     match operation {
         Operation::Add => evaled_first_arg + evaled_second_arg,
         Operation::Subtract => evaled_first_arg - evaled_second_arg,
@@ -72,13 +72,13 @@ fn evaluate_apply(operation: Operation, first_arg: Expression, second_arg: Expre
     }
 }
 
-fn evaluate_expression(expression: Expression) -> i64 {
+fn interpret_expression(expression: Expression) -> i64 {
     match expression {
         Expression::Integer { value: int } => int,
         Expression::Apply {
             operation,
             box first_arg,
             box second_arg,
-        } => evaluate_apply(operation, first_arg, second_arg),
+        } => interpret_apply(operation, first_arg, second_arg),
     }
 }
