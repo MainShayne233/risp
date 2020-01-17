@@ -1,6 +1,15 @@
 # Risp
 
-A lisp implemented as a Rust procedural macro!
+A [LISP](https://en.wikipedia.org/wiki/Lisp_(programming_language)) implemented as a Rust procedural macro!
+
+## What?
+
+I got inspired by the neat stuff people are doing with procedural macros in Rust, like [`yew`'s `html!` macro](https://github.com/yewstack/yew#jsx-like-templates-with-html-macro), and thought, could you write a programming language that's just a procedural macro?
+
+As a proof of concept, I decided to implement an interperter for a basic LISP. The limitations of this LISP are:
+- The entire program must be a single [S-Expression](https://en.wikipedia.org/wiki/S-expression)
+- The only functions available are `+`, `-`, `*`, and `/`
+- Each expression is either an integer or a function apply
 
 ## Use
 
